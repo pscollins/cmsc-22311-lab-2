@@ -1,15 +1,29 @@
 module Suck where
-import Data.Map
+import Data.Map hiding (foldl)
+import Data.Monoid
+-- import Data.Foldable
 
-import Text.Html.TagSoup.Tree
+import Text.HTML.TagSoup
+import Text.HTML.TagSoup.Tree
 
 type PrimitiveModel = Map (String, String) [String]
 type ProcessedModel = [(String, [(Int, Int)])]
 
 
-extractBody :: String -> [String]
-extractBody s =
-    let
-        tags = parseTags s
+searchTree :: (TagTree String -> [TagTree String]) -> [TagTree String] -> [TagTree String]
+searchTree f [] = []
+searchTree f (b:ts) = f b ++ searchTree f ts
 
-in
+-- instance Foldable TagTree where
+--     foldMap f
+
+
+treeHasAttribute :: Attribute String -> TagTree String -> [TagTree String]
+treeHasAttribute attr (TagLeaf _) = []
+treeHasAttribute attr (TagBranch _  attrs children)
+    | attr `elem` attrs = children
+    | otherwise = []
+
+extractBody :: String -> String
+extractBody = innerText . flattenTree .
+              searchTree (treeHasAttribute ("id", "body")) . tagTree . parseTags
