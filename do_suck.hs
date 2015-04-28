@@ -6,4 +6,4 @@ main = do
   urls <- getContents
   pageBodies <- mapM (\url -> simpleHTTP (getRequest url) >>=
                               getResponseBody) $ lines urls
-  putStr $ show $ bodyTextsToModel pageBodies
+  putStr $ unlines $ map show $ bodyTextsToModel pageBodies
