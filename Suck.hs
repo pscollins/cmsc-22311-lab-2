@@ -4,6 +4,8 @@ import Data.Map (empty, insertWith, Map, mapWithKey, lookupIndex, unionsWith)
 import Data.Tuple (swap)
 import Data.Maybe
 import Data.Monoid
+import Control.Applicative ((<$>))
+import Data.Char (isAscii)
 
 import Text.HTML.TagSoup
 import Text.HTML.TagSoup.Tree
@@ -26,7 +28,7 @@ treeHasAttribute attr (TagBranch _  attrs children)
     | otherwise = concat $ map (treeHasAttribute attr) children
 
 extractBody :: String -> String
-extractBody = innerText . flattenTree .
+extractBody = filter isAscii . innerText . flattenTree .
               searchTree (treeHasAttribute ("id", "body")) . tagTree . parseTags
 
 toPrimModel :: String -> PrimitiveModel
@@ -44,7 +46,7 @@ toProcessedModel m = map stripFirst $ M.assocs $ mapWithKey relabel m
     where stripFirst ((_, y), vs) = (y, vs)
           relabel (_, y) vs = mapMaybe idxOfPairs vs
               where idxOfPairs (count, z) =
-                        lookupIndex (y, z) m >>= return . (flip (,)) count
+                        flip (,) count <$> lookupIndex (y, z) m
 
 mergePrimModels :: [PrimitiveModel] -> PrimitiveModel
 mergePrimModels = (unionsWith (++))
