@@ -1,6 +1,6 @@
 module Suck where
 import qualified Data.Map as M
-import Data.Map (empty, insertWith, Map, mapWithKey, lookupIndex, unionWith)
+import Data.Map (empty, insertWith, Map, mapWithKey, lookupIndex, unionsWith)
 import Data.Tuple (swap)
 import Data.Maybe
 import Data.Monoid
@@ -44,12 +44,10 @@ toProcessedModel m = map stripFirst $ M.assocs $ mapWithKey relabel m
     where stripFirst ((_, y), vs) = (y, vs)
           relabel (_, y) vs = mapMaybe idxOfPairs vs
               where idxOfPairs (count, z) =
-                        case lookupIndex (y, z) m of
-                          Just i -> Just (i, count)
-                          Nothing -> Nothing
+                        lookupIndex (y, z) m >>= return . (flip (,)) count
 
 mergePrimModels :: [PrimitiveModel] -> PrimitiveModel
-mergePrimModels = foldl (unionWith (++)) (empty :: PrimitiveModel)
+mergePrimModels = (unionsWith (++))
 
 bodyTextsToModel :: [String] -> ProcessedModel
 bodyTextsToModel = process . mergePrimModels . getPrimModels
