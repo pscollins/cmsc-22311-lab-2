@@ -5,29 +5,45 @@ import Data.Map
 import Test.HUnit
 
 
+bodyWords = words . extractBody
+htmlToPrimModel = toPrimModel . extractBody
+htmlToFreqModel = toFreqModel . htmlToPrimModel
 
 main = runTestTT $ TestList [
-         testModel1 ~=? htmlToPrimModel testString1
-       , testModel2 ~=? htmlToPrimModel testString2]
+        testBody1 ~=? bodyWords testString1
+       , testBody2 ~=? bodyWords testString2
+       , testBody3 ~=? bodyWords testString3
+       , testModel1 ~=? htmlToPrimModel testString1
+       , testModel2 ~=? htmlToPrimModel testString2
+       , testFreqModel1 ~=? htmlToFreqModel testString1
+       , testFreqModel2 ~=? htmlToFreqModel testString2]
 
 testString1 = unlines [
                "<div id=\"body\">"
              , "<p>Hello World Today</p>"
              , "</div>"]
 
+testBody1 = ["Hello", "World", "Today"]
+
 testModel1 = fromList [(("Hello", "World"), ["Today"])]
+testFreqModel1 = fromList [(("Hello", "World"), [(1, "Today")])]
 
 testString2 = unlines [
                "<div id=\"body\">"
              , "<p>Hello World Today I</p>"
              , "</div>"]
 
+testBody2 = ["Hello", "World", "Today", "I"]
+
 testModel2 = fromList [
               (("Hello", "World"), ["Today"])
              , (("World", "Today"), ["I"])]
+testFreqModel2 = fromList [
+                  (("Hello", "World"), [(1, "Today")])
+                 , (("World", "Today"), [(1, "I")])]
 
 
-testString = unlines [
+testString3 = unlines [
               "<div class=\"contrib\">"
              , "<a href=\"/\">Author</a>"
              , "<div class=\"abstract\">"
@@ -35,5 +51,7 @@ testString = unlines [
              , "</div> "
              , "<div id=\"body\">"
              , "<blockquote class=\"disp-quote\">"
-             , "<p>Human soul, let us see whether present time can be long.</p>"
+             , "<p>Human soul, let us see.</p>"
              , "</div>"]
+
+testBody3 = words "Human soul, let us see."
