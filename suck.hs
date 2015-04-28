@@ -27,3 +27,10 @@ treeHasAttribute attr (TagBranch _  attrs children)
 extractBody :: String -> String
 extractBody = innerText . flattenTree .
               searchTree (treeHasAttribute ("id", "body")) . tagTree . parseTags
+
+toPrimModel :: String -> PrimitiveModel
+toPrimModel = foldl updateMap (empty :: PrimitiveModel) . byTriples . words
+    where byTriples ss = zip3 ss (drop 1 ss) (drop 2 ss)
+          updateMap m (x, y, z)
+              | (x, y) `member` m =  adjust (z:) (x, y) m
+              | otherwise = insert (x, y) [] m
