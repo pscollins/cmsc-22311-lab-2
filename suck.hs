@@ -1,6 +1,6 @@
 module Suck where
 import qualified Data.Map as M
-import Data.Map (empty, insertWith, Map, mapWithKey, lookupIndex)
+import Data.Map (empty, insertWith, Map, mapWithKey, lookupIndex, unionWith)
 import Data.Tuple (swap)
 import Data.Maybe
 import Data.Monoid
@@ -49,5 +49,5 @@ toProcessedModel m = map stripFirst $ M.assocs $ mapWithKey relabel m
                           Just i -> Just (i, count)
                           Nothing -> Nothing
 
--- toProcessedModel :: PreProcessedModel -> ProcessedModel
--- toProcessedModel = undefined
+mergePrimModels :: [PrimitiveModel] -> PrimitiveModel
+mergePrimModels = foldl (unionWith (++)) (empty :: PrimitiveModel)

@@ -19,7 +19,8 @@ main = runTestTT $ TestList [
        , testModel2 ~=? htmlToPrimModel testString2
        , testFreqModel1 ~=? htmlToFreqModel testString1
        , testFreqModel2 ~=? htmlToFreqModel testString2
-       , testProcessedModel2 ~=? htmlToProcessedModel testString2]
+       , testProcessedModel2 ~=? htmlToProcessedModel testString2
+       , testModel1Double ~=? mergePrimModels [testModel1, testModel1]]
 
 
 testString1 = unlines [
@@ -29,6 +30,7 @@ testString1 = unlines [
 
 testBody1 = ["Hello", "World", "Today"]
 testModel1 = fromList [(("Hello", "World"), ["Today"])]
+testModel1Double = fromList [(("Hello", "World"), ["Today", "Today"])]
 testFreqModel1 = fromList [(("Hello", "World"), [(1, "Today")])]
 
 
