@@ -1,7 +1,8 @@
 module Suck where
 import qualified Data.Map as M
-import Data.Map (empty, insertWith, Map)
+import Data.Map (empty, insertWith, Map, mapWithKey, lookupIndex)
 import Data.Tuple (swap)
+import Data.Maybe
 import Data.Monoid
 -- import Data.Foldable
 
@@ -11,6 +12,7 @@ import Text.HTML.TagSoup.Tree
 type PrimitiveModel = Map (String, String) [String]
 type FrequencyModel = Map (String, String) [(Int, String)]
 type FrequencyCounter = Map String Int
+type PreProcessedModel = Map (String, String) [(Int, Int)]
 type ProcessedModel = [(String, [(Int, Int)])]
 
 
@@ -37,3 +39,15 @@ toFreqModel :: PrimitiveModel -> FrequencyModel
 toFreqModel = M.map $ map swap . M.assocs . countFreq
     where countingInsert = flip $ (flip $ insertWith (+)) 1
           countFreq = foldl countingInsert (empty :: FrequencyCounter)
+
+toProcessedModel :: FrequencyModel -> ProcessedModel
+toProcessedModel m = map stripFirst $ M.assocs $ mapWithKey relabel m
+    where stripFirst ((_, y), vs) = (y, vs)
+          relabel (_, y) vs = mapMaybe idxOfPairs vs
+              where idxOfPairs (count, z) =
+                        case lookupIndex (y, z) m of
+                          Just i -> Just (i, count)
+                          Nothing -> Nothing
+
+-- toProcessedModel :: PreProcessedModel -> ProcessedModel
+-- toProcessedModel = undefined

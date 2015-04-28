@@ -8,6 +8,8 @@ import Test.HUnit
 bodyWords = words . extractBody
 htmlToPrimModel = toPrimModel . extractBody
 htmlToFreqModel = toFreqModel . htmlToPrimModel
+-- htmlToPreProcessedModel = toPreProcessedModel . htmlToFreqModel
+htmlToProcessedModel = toProcessedModel . htmlToFreqModel
 
 main = runTestTT $ TestList [
         testBody1 ~=? bodyWords testString1
@@ -16,7 +18,9 @@ main = runTestTT $ TestList [
        , testModel1 ~=? htmlToPrimModel testString1
        , testModel2 ~=? htmlToPrimModel testString2
        , testFreqModel1 ~=? htmlToFreqModel testString1
-       , testFreqModel2 ~=? htmlToFreqModel testString2]
+       , testFreqModel2 ~=? htmlToFreqModel testString2
+       , testProcessedModel2 ~=? htmlToProcessedModel testString2]
+
 
 testString1 = unlines [
                "<div id=\"body\">"
@@ -24,23 +28,22 @@ testString1 = unlines [
              , "</div>"]
 
 testBody1 = ["Hello", "World", "Today"]
-
 testModel1 = fromList [(("Hello", "World"), ["Today"])]
 testFreqModel1 = fromList [(("Hello", "World"), [(1, "Today")])]
+
 
 testString2 = unlines [
                "<div id=\"body\">"
              , "<p>Hello World Today I</p>"
              , "</div>"]
-
 testBody2 = ["Hello", "World", "Today", "I"]
-
 testModel2 = fromList [
               (("Hello", "World"), ["Today"])
              , (("World", "Today"), ["I"])]
 testFreqModel2 = fromList [
                   (("Hello", "World"), [(1, "Today")])
                  , (("World", "Today"), [(1, "I")])]
+testProcessedModel2 = [("World", [(1, 1)]), ("Today", [])]
 
 
 testString3 = unlines [
@@ -55,3 +58,8 @@ testString3 = unlines [
              , "</div>"]
 
 testBody3 = words "Human soul, let us see."
+
+
+-- testString4 = unlines [
+--                "<div id=\"body\">"
+--               , "<p>The Quick Brown
