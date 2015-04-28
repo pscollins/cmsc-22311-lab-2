@@ -8,7 +8,6 @@ import Test.HUnit
 bodyWords = words . extractBody
 htmlToPrimModel = toPrimModel . extractBody
 htmlToFreqModel = toFreqModel . htmlToPrimModel
--- htmlToPreProcessedModel = toPreProcessedModel . htmlToFreqModel
 htmlToProcessedModel = toProcessedModel . htmlToFreqModel
 
 main = runTestTT $ TestList [
@@ -60,8 +59,3 @@ testString3 = unlines [
              , "</div>"]
 
 testBody3 = words "Human soul, let us see."
-
-
--- testString4 = unlines [
---                "<div id=\"body\">"
---               , "<p>The Quick Brown

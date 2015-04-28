@@ -4,7 +4,6 @@ import Data.Map (empty, insertWith, Map, mapWithKey, lookupIndex, unionWith)
 import Data.Tuple (swap)
 import Data.Maybe
 import Data.Monoid
--- import Data.Foldable
 
 import Text.HTML.TagSoup
 import Text.HTML.TagSoup.Tree
@@ -51,3 +50,8 @@ toProcessedModel m = map stripFirst $ M.assocs $ mapWithKey relabel m
 
 mergePrimModels :: [PrimitiveModel] -> PrimitiveModel
 mergePrimModels = foldl (unionWith (++)) (empty :: PrimitiveModel)
+
+bodyTextsToModel :: [String] -> ProcessedModel
+bodyTextsToModel = process . mergePrimModels . getPrimModels
+    where process = toProcessedModel . toFreqModel
+          getPrimModels = map (toPrimModel . extractBody)
