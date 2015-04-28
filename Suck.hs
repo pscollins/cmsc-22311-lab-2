@@ -44,9 +44,8 @@ toFreqModel = M.map $ map swap . M.assocs . countFreq
 toProcessedModel :: FrequencyModel -> ProcessedModel
 toProcessedModel m = map stripFirst $ M.assocs $ mapWithKey relabel m
     where stripFirst ((_, y), vs) = (y, vs)
-          relabel (_, y) vs = mapMaybe idxOfPairs vs
-              where idxOfPairs (count, z) =
-                        flip (,) count <$> lookupIndex (y, z) m
+          relabel (_, y) = mapMaybe $ idxOfPairs y
+          idxOfPairs y (count, z) = flip (,) count <$> lookupIndex (y, z) m
 
 mergePrimModels :: [PrimitiveModel] -> PrimitiveModel
 mergePrimModels = (unionsWith (++))
