@@ -23,7 +23,7 @@ treeHasAttribute :: Attribute String -> TagTree String -> [TagTree String]
 treeHasAttribute attr (TagLeaf _) = []
 treeHasAttribute attr (TagBranch _  attrs children)
     | attr `elem` attrs = children
-    | otherwise = []
+    | otherwise = concat $ map (treeHasAttribute attr) children
 
 extractBody :: String -> String
 extractBody = innerText . flattenTree .

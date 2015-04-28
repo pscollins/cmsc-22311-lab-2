@@ -19,7 +19,8 @@ main = runTestTT $ TestList [
        , testFreqModel1 ~=? htmlToFreqModel testString1
        , testFreqModel2 ~=? htmlToFreqModel testString2
        , testProcessedModel2 ~=? htmlToProcessedModel testString2
-       , testModel1Double ~=? mergePrimModels [testModel1, testModel1]]
+       , testModel1Double ~=? mergePrimModels [testModel1, testModel1]
+       , testBody3 ~=? bodyWords testString4]
 
 
 testString1 = unlines [
@@ -59,3 +60,16 @@ testString3 = unlines [
              , "</div>"]
 
 testBody3 = words "Human soul, let us see."
+
+testString4 = unlines [
+              "<div class=\"contrib\">"
+             , "<a href=\"/\">Author</a>"
+             , "<div class=\"abstract\">"
+             , "<strong>Abstract</strong><p> if not the unconscious. </p>"
+             , "</div> "
+             , "<div>"
+             , "<div id=\"body\">"
+             , "<blockquote class=\"disp-quote\">"
+             , "<p>Human soul, let us see.</p>"
+             , "</div>"
+             , "</div>"]
