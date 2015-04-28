@@ -34,3 +34,5 @@ toPrimModel = foldl updateMap (empty :: PrimitiveModel) . byTriples . words
           updateMap m (x, y, z)
               | (x, y) `member` m =  adjust (z:) (x, y) m
               | otherwise = insert (x, y) [] m
+
+htmlToPrimModel = toPrimModel . extractBody
