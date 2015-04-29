@@ -23,13 +23,6 @@ genFreqSelector = toFrequencySelector <$> genPairs
 genGenerator :: Gen StdGen
 genGenerator = arbitrary >>= return . mkStdGen
 
--- genIncreasingRandomGenerators :: Gen [((Int, Int), StdGen)]
--- genIncreasingRandomGenerators = zip <$> genPairs <*> (repeat <$> genGenerator)
-
--- genIncreasingRandomGenerators :: Gen (StdGen, FrequencySelector)
--- genIncreasingRandomGenerators = (,) <$> genGenerator <*> (toFrequencySelector <*> genPairs)
-
-
 genIncreasingRandomList :: Gen [Int]
 genIncreasingRandomList = fmap weightedRandomList $
                           (,) <$> genGenerator <*> genFreqSelector
