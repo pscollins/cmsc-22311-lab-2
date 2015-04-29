@@ -6,10 +6,12 @@ import Data.Array (listArray, Array)
 import System.Random
 import Control.Monad.State.Lazy
 import Control.Applicative
-import qualified Data.Vector.Unboxed as V
+import qualified Data.Vector as V
 
 type ModelState = (String, [(Int, Int)])
 type FastModel = Array Int ModelState
+
+type TransitionFunction = Array Int (String, [Int])
 
 type FrequencySelector = V.Vector Int
 
@@ -30,14 +32,6 @@ nextWeightedRandom = do
   let (i, g') = randomR (0, V.length fs) g
   put (g', fs)
   return (fs V.! i)
-
--- nextRandom :: State ([(Int, Int)] Int
--- nextRandom = do
---   rnd <- get
---   let (i, rnd') = next rnd
---   put rnd'
---   return i
-
 
 weightedRandomList :: (StdGen, FrequencySelector) -> [Int]
 weightedRandomList = evalState $ repeat <$> nextWeightedRandom
