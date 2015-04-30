@@ -15,6 +15,7 @@ import qualified Data.Foldable as F
 import qualified Data.Vector as V
 import qualified Data.Map.Lazy as M
 
+type WeightedGenerator = State (StdGen, FrequencySelector) Int
 
 
 -- Quickcheck Tests
@@ -66,13 +67,12 @@ prop_CorrectDistribution xs = all diffOk $ zip xs $ drop 1 xs
           epsilon = 1000
 
 -- HUnit Tests
--- testStringModel = unlines ["(\"Hello\",[(2,1),(1,2)])"
---                           ,"(\"World\",[(1,2),(2,1)]"]
-
 testStringModel = unlines ["(\"Hello\",[(2,1),(1,2)])"
                           ,"(\"World\",[(1,2),(2,1)])"]
+
 testPrimModel = [("Hello", V.fromList [1, 1, 2])
                 ,("World", V.fromList [2, 1, 1])]
+
 walkTestModel = walkModel $ fromPrim $ deserialize testStringModel
 testDeserialize = testPrimModel ~=? deserialize testStringModel
 

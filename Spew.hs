@@ -1,5 +1,3 @@
-{-# LANGUAGE ScopedTypeVariables #-}
-
 module Spew where
 
 import Data.Array (listArray, Array)
@@ -15,9 +13,12 @@ import Debug.Trace
 type PrimFastModel = [(String, FrequencySelector)]
 type FastModel = Array Int (String, FrequencySelector)
 
+-- We pay a space cost up front for this, but save ourselves
+-- computation later down the line. Given that most state transitions
+-- have a frequency of only 1 or 2 (based on a cursory look over
+-- sokal.model), it seems likely that the space cost won't be high.
 type FrequencySelector = V.Vector Int
-type WeightedGenerator = State (StdGen, FrequencySelector) Int
-type ModelWalker = State StdGen Int
+
 
 toFrequencySelector :: [(Int, Int)] -> FrequencySelector
 toFrequencySelector = V.fromList . concatMap stretch
