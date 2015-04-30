@@ -9,18 +9,21 @@ import Control.Applicative
 import qualified Data.Vector as V
 import Debug.Trace
 
-type ModelState = (String, [(Int, Int)])
-type FastModel = Array Int ModelState
+-- type ModelState = (String, [(Int, Int)])
+-- type FastModel = Array Int ModelState
+type PrimitiveTransitionFunction [(String, FrequencySelector)]
 
 type TransitionFunction = Array Int (String, [Int])
-
 type FrequencySelector = V.Vector Int
-
 type WeightedGenerator = State (StdGen, FrequencySelector) Int
 
-deserialize :: String -> FastModel
-deserialize = buildArr . map read .  lines
-    where buildArr ss = listArray (1, length ss) ss
+deserialize :: String -> PrimitiveTransitionFunction
+deserialize = map (makeTrans . read) .  lines
+    where makeTrans (s, is) = (s, toFrequencySelector is)
+
+processTransitionFunction :: StdGen -> PrimitiveTransitionFunction -> TransitionFunction
+processTransitionFunction g pf = listArray (1, length processed) processed
+    where processed = map
 
 
 toFrequencySelector :: [(Int, Int)] -> FrequencySelector

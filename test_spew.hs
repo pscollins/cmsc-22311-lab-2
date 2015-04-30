@@ -1,15 +1,19 @@
 import Spew
 import System.Random
 import Test.QuickCheck
+import Test.HUnit
 import Control.Monad
 import Control.Applicative
 import Data.Maybe
-import Debug.Trace
+
+
 import qualified Data.Foldable as F
 import qualified Data.Vector as V
 import qualified Data.Map.Lazy as M
 
 
+
+-- Quickcheck Tests
 
 countOccurrences :: (F.Foldable t, Ord a) => t a -> M.Map a Int
 countOccurrences = F.foldl countingInsert M.empty
@@ -48,11 +52,10 @@ prop_CorrectDistribution xs = all diffOk $ zip xs $ drop 1 xs
     where diffOk (x, y) = abs (x - y) < epsilon
           epsilon = 1000
 
-
+-- HUnit Tests
 
 main = do
   quickCheck $ forAll genPairs prop_CorrectLength
   quickCheck $ forAll genFreqSelector prop_CorrectOccurrences
   quickCheck $ forAll genIncreasingRandomList $ not .  null
-  -- Something seems to be wrong with this generator ?
   quickCheck $ forAll genIncreasingRandomList (prop_CorrectDistribution . take 10000)
