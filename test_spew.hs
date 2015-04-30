@@ -5,6 +5,9 @@ import Test.HUnit
 import Control.Monad
 import Control.Applicative
 import Data.Maybe
+import Control.Monad.State.Lazy
+import Data.Array (listArray, Array)
+import qualified Data.Array as A
 
 
 import qualified Data.Foldable as F
@@ -14,6 +17,10 @@ import qualified Data.Map.Lazy as M
 
 
 -- Quickcheck Tests
+
+
+weightedRandomList :: (StdGen, FrequencySelector) -> [Int]
+weightedRandomList = evalState $ mapM (\_ -> nextWeightedRandom) [1..]
 
 countOccurrences :: (F.Foldable t, Ord a) => t a -> M.Map a Int
 countOccurrences = F.foldl countingInsert M.empty
@@ -53,13 +60,26 @@ prop_CorrectDistribution xs = all diffOk $ zip xs $ drop 1 xs
           epsilon = 1000
 
 -- HUnit Tests
+-- testStringModel = unlines ["(\"Hello\",[(2,1),(1,2)])"
+--                           ,"(\"World\",[(1,2),(2,1)]"]
 
+testStringModel = unlines ["(\"Hello\",[(2,1),(1,2)])"
+                          ,"(\"World\",[(1,2),(2,1)])"]
+testPrimModel = [("Hello", V.fromList [1, 1, 2])
+                ,("World", V.fromList [2, 1, 1])]
+walkTestModel = walkModel . fromPrim . deserialize testStringModel
+
+
+testDeserialize = testPrimModel ~=? deserialize testStringModel
+
+testWalkModel = ["Hello", "World"] ~=? evalWriter (walkTestModel 0 >>= walkTestModel)
 
 
 -- Test Execution
 
 main = do
-  quickCheck $ forAll genPairs prop_CorrectLength
-  quickCheck $ forAll genFreqSelector prop_CorrectOccurrences
-  quickCheck $ forAll genIncreasingRandomList $ not .  null
-  quickCheck $ forAll genIncreasingRandomList (prop_CorrectDistribution . take 10000)
+  -- quickCheck $ forAll genPairs prop_CorrectLength
+  -- quickCheck $ forAll genFreqSelector prop_CorrectOccurrences
+  -- quickCheck $ forAll genIncreasingRandomList $ not .  null
+  -- quickCheck $ forAll genIncreasingRandomList (prop_CorrectDistribution . take 10000)
+  runTestTT $ TestList [testDeserialize]

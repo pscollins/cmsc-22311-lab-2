@@ -3,31 +3,25 @@
 module Spew where
 
 import Data.Array (listArray, Array)
+import qualified Data.Array as A
 import System.Random
 import Control.Monad.State.Lazy
+import Control.Monad.Writer.Lazy
 import Control.Applicative
 import qualified Data.Vector as V
 import Debug.Trace
 
 
-type PrimTransitionFunction = [(String, FrequencySelector)]
+type PrimFastModel = [(String, FrequencySelector)]
+type FastModel = Array Int (String, FrequencySelector)
 
-type TransitionFunction = Array Int (String, [Int])
 type FrequencySelector = V.Vector Int
 type WeightedGenerator = State (StdGen, FrequencySelector) Int
-
-deserialize :: String -> PrimTransitionFunction
-deserialize = map (makeTrans . read) .  lines
-    where makeTrans (s, is) = (s, toFrequencySelector is)
-
-processTransitionFunction :: StdGen -> PrimTransitionFunction -> TransitionFunction
-processTransitionFunction g pfs = listArray (1, length processed) processed
-    where processed = map createTransitions pfs
-          createTransitions (s, fs) = (s, weightedRandomList (g, fs))
+type ModelWalker = State StdGen Int
 
 toFrequencySelector :: [(Int, Int)] -> FrequencySelector
 toFrequencySelector = V.fromList . concatMap stretch
-    where stretch (fr, idx) = replicate idx fr
+    where stretch (fr, idx) = replicate fr idx
 
 nextWeightedRandom :: WeightedGenerator
 nextWeightedRandom = do
@@ -36,5 +30,30 @@ nextWeightedRandom = do
   put (g', fs)
   return (fs V.! i)
 
-weightedRandomList :: (StdGen, FrequencySelector) -> [Int]
-weightedRandomList = evalState $ mapM (\_ -> nextWeightedRandom) [1..]
+genWeightedRandom :: StdGen -> FrequencySelector -> Int
+genWeightedRandom = curry $ evalState nextWeightedRandom
+
+
+deserialize :: String -> PrimFastModel
+deserialize = map (makeTrans . read) .  lines
+    where makeTrans (s, is) = (s, toFrequencySelector is)
+
+fromPrim :: PrimFastModel -> FastModel
+fromPrim xs = listArray (0, length xs) xs
+
+walkModel :: FastModel -> Int -> WriterT [String] (State StdGen) Int
+walkModel model idx = do
+            let (s, fs) = model A.! idx
+            tell [s]
+            g <- get
+            return $ genWeightedRandom g fs
+
+
+
+
+-- processFastModel :: StdGen -> PrimFastModel -> FastModel
+-- processFastModel g pfs = listArray (1, length processed) processed
+--     where processed = map createTransitions pfs
+--           createTransitions (s, fs) = (s, weightedRandomList (g, fs))
+
+-- transition :: FastModel -> Int -> [String]
