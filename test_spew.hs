@@ -18,7 +18,12 @@ import qualified Data.Map.Lazy as M
 
 
 -- Quickcheck Tests
-
+nextWeightedRandom :: WeightedGenerator
+nextWeightedRandom = do
+  (g, fs ) <- get
+  let (i, g') = randomR (0, V.length fs - 1) g
+  put (g', fs)
+  return (fs V.! i)
 
 weightedRandomList :: (StdGen, FrequencySelector) -> [Int]
 weightedRandomList = evalState $ mapM (\_ -> nextWeightedRandom) [1..]
@@ -69,12 +74,7 @@ testStringModel = unlines ["(\"Hello\",[(2,1),(1,2)])"
 testPrimModel = [("Hello", V.fromList [1, 1, 2])
                 ,("World", V.fromList [2, 1, 1])]
 walkTestModel = walkModel $ fromPrim $ deserialize testStringModel
-
-
 testDeserialize = testPrimModel ~=? deserialize testStringModel
-
--- testWalkModel = ["Hello", "World"] ~=? execWriter (walkTestModel 0 >>= walkTestModel)
-
 
 -- Test Execution
 

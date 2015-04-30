@@ -23,39 +23,59 @@ toFrequencySelector :: [(Int, Int)] -> FrequencySelector
 toFrequencySelector = V.fromList . concatMap stretch
     where stretch (fr, idx) = replicate fr idx
 
-nextWeightedRandom :: WeightedGenerator
-nextWeightedRandom = do
-  (g, fs ) <- get
-  let (i, g') = randomR (0, V.length fs - 1) g
-  put (g', fs)
-  return (fs V.! i)
-
-genWeightedRandom :: StdGen -> FrequencySelector -> Int
-genWeightedRandom = curry $ evalState nextWeightedRandom
-
 
 deserialize :: String -> PrimFastModel
 deserialize = map (makeTrans . read) .  lines
     where makeTrans (s, is) = (s, toFrequencySelector is)
 
 fromPrim :: PrimFastModel -> FastModel
-fromPrim xs = listArray (0, length xs) xs
+fromPrim xs = listArray (1, length xs) xs
 
-walkModel :: FastModel -> Int -> WriterT [String] (State StdGen) Int
-walkModel model idx = do
-            let (s, fs) = model A.! idx
-            tell [s]
-            g <- get
-            let (i, (g', _)) = runState nextWeightedRandom (g, fs)
-            put g'
-            return i
+randomIdx :: FastModel -> StdGen -> (Int, StdGen)
+randomIdx m g = randomR (A.bounds m) g
+
+walkModel :: FastModel -> WriterT [String] (State (StdGen, Int)) ()
+walkModel model =
+    do
+      (g, idx) <- get
+      let (s, fs) = model A.! idx
+      let stuck = V.null fs
+      tell [s ++ if stuck then "." else ""]
+      let (i, g') = randomR (0, V.length fs - 1) g
+      let (j, g'') = randomIdx model g
+      put (g'', if stuck then j else fs V.! i)
 
 
+runModel :: StdGen -> FastModel -> [String]
+runModel g model = (evalState $ execWriterT $ mapM (\_ -> walker) [1..]) (g', idx)
+    where walker = walkModel model
+          (idx, g') = randomIdx model g
 
+takeUntil :: (a -> Bool) -> [a] -> [a]
+takeUntil f [] = []
+takeUntil f [x] = [x]
+takeUntil f (x:y:xs)
+    | f y = [x, y]
+    | otherwise = x:(takeUntil f (y:xs))
 
--- processFastModel :: StdGen -> PrimFastModel -> FastModel
--- processFastModel g pfs = listArray (1, length processed) processed
---     where processed = map createTransitions pfs
---           createTransitions (s, fs) = (s, weightedRandomList (g, fs))
+isTerminator :: Char -> Bool
+isTerminator '.' = True
+isTerminator '?' = True
+isTerminator '!' = True
+isTerminator _ = False
 
--- transition :: FastModel -> Int -> [String]
+sentenceFinished :: String -> Bool
+sentenceFinished = any isTerminator
+
+takeAtLeast :: Int -> [String] -> [String]
+takeAtLeast n ss = body ++ terminator
+    where (body, rest) = splitAt n ss
+          terminator = takeUntil sentenceFinished rest
+
+linefill :: Int -> [String] -> String
+linefill _ [] = "\n"
+linefill n (x:xs) = iter x xs where
+    iter x (y:ys)
+        | length x + length y + 1 > n = x ++ "\n" ++ linefill n (y:ys)
+        | otherwise                   = iter (x ++ " " ++ y) ys
+    iter x [] = x ++ "\n"
