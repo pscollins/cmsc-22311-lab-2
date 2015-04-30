@@ -3,6 +3,7 @@ import System.Random
 import Test.QuickCheck
 import Control.Monad
 import Control.Applicative
+import Data.Maybe
 
 import qualified Data.Foldable as F
 import qualified Data.Vector as V
@@ -13,6 +14,10 @@ import qualified Data.Map.Lazy as M
 countOccurrences :: (F.Foldable t, Ord a) => t a -> M.Map a Int
 countOccurrences = F.foldl countingInsert M.empty
     where countingInsert = flip $ (flip $ M.insertWith (+)) 1
+
+
+countOccurrences' :: (F.Foldable t, Ord a) => t a -> [(a, Int)]
+countOccurrences' = M.assocs . countOccurrences
 
 genPairs :: Gen [(Int, Int)]
 genPairs = sized (return . ($ zip [1..] [1..]) . take)
@@ -33,13 +38,17 @@ prop_CorrectLength ns = (V.length $ toFrequencySelector ns) == totalCount
     where totalCount = sum $ map fst ns
 
 prop_CorrectOccurrences :: FrequencySelector -> Bool
-prop_CorrectOccurrences = all (uncurry (==)) . M.assocs . countOccurrences
+prop_CorrectOccurrences = all (uncurry (==)) . countOccurrences'
 
 
 prop_CorrectDistribution :: [Int] -> Bool
-prop_CorrectDistribution ns = undefined
-
+prop_CorrectDistribution = check 0 . M.elems . countOccurrences
+    where check x [] = True
+          check x (y:ys)
+              | (abs (y - x) < epsilon) = check y ys
+              | otherwise = False
+          epsilon = 5
 main = do
   quickCheck $ forAll genPairs prop_CorrectLength
   quickCheck $ forAll genFreqSelector prop_CorrectOccurrences
-  -- quickCheck $ forAll gen
+  quickCheck $ forAll genIncreasingRandomList prop_CorrectDistribution

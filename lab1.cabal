@@ -7,14 +7,14 @@ version:             0.1.0.0
 -- description:         
 -- license:             
 license-file:        LICENSE
-author:              Patrick Collins
-maintainer:          pscollins@uchicago.edu
+-- author:              
+-- maintainer:          
 -- copyright:           
 -- category:            
 build-type:          Simple
 cabal-version:       >=1.8
 
 executable lab1
-  -- main-is:             
+  main-is: Spew.hs 
   -- other-modules:       
-  build-depends:       base ==4.*, containers ==0.5.*, tagsoup ==0.13.*
+  build-depends:       base ==4.6.*, containers ==0.5.*, tagsoup ==0.13.*, array ==0.4.*, random ==1.0.*, mtl ==2.1.*, vector ==0.10.*
