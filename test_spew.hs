@@ -79,8 +79,8 @@ testDeserialize = testPrimModel ~=? deserialize testStringModel
 -- Test Execution
 
 main = do
-  -- quickCheck $ forAll genPairs prop_CorrectLength
-  -- quickCheck $ forAll genFreqSelector prop_CorrectOccurrences
-  -- quickCheck $ forAll genIncreasingRandomList $ not .  null
-  -- quickCheck $ forAll genIncreasingRandomList (prop_CorrectDistribution . take 10000)
+  quickCheck $ forAll genPairs prop_CorrectLength
+  quickCheck $ forAll genFreqSelector prop_CorrectOccurrences
+  quickCheck $ forAll genIncreasingRandomList $ not .  null
+  quickCheck $ forAll genIncreasingRandomList (prop_CorrectDistribution . take 10000)
   runTestTT $ TestList [testDeserialize]
