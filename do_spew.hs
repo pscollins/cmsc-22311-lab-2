@@ -14,5 +14,5 @@ main = do
   input <- readFile "sokal.model"
   let model = fromPrim $ deserialize $ input
   let (startIdx, gen') = randomIdx model gen
-  let text = dropWhile (not . sentenceFinished) $ runModel gen' model
+  let text = drop 1 $ dropWhile (not . sentenceFinished) $ runModel gen' model
   putStrLn $ linefill 72 $ takeAtLeast (parseArgs argv) text
