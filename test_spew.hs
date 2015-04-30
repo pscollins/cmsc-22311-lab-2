@@ -54,6 +54,10 @@ prop_CorrectDistribution xs = all diffOk $ zip xs $ drop 1 xs
 
 -- HUnit Tests
 
+
+
+-- Test Execution
+
 main = do
   quickCheck $ forAll genPairs prop_CorrectLength
   quickCheck $ forAll genFreqSelector prop_CorrectOccurrences
