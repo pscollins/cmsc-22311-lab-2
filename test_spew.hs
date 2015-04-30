@@ -42,12 +42,13 @@ prop_CorrectOccurrences = all (uncurry (==)) . countOccurrences'
 
 
 prop_CorrectDistribution :: [Int] -> Bool
-prop_CorrectDistribution = check 0 . M.elems . countOccurrences
-    where check x [] = True
-          check x (y:ys)
-              | (abs (y - x) < epsilon) = check y ys
-              | otherwise = False
-          epsilon = 5
+prop_CorrectDistribution xs = all diffOk $ zip xs $ drop 1 xs
+    where diffOk (x, y) = abs (x - y) < epsilon
+          epsilon = 10
+
+
+
+
 main = do
   quickCheck $ forAll genPairs prop_CorrectLength
   quickCheck $ forAll genFreqSelector prop_CorrectOccurrences
