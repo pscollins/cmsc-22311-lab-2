@@ -5,10 +5,10 @@ name:                lab1
 version:             0.1.0.0
 -- synopsis:            
 -- description:         
--- license:             
+license:             GPL-2
 license-file:        LICENSE
--- author:              
--- maintainer:          
+author:              Patrick Collins
+maintainer:          pscollins@uchicago.edu
 -- copyright:           
 -- category:            
 build-type:          Simple
