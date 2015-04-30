@@ -7,6 +7,7 @@ import System.Random
 import Control.Monad.State.Lazy
 import Control.Applicative
 import qualified Data.Vector as V
+import Debug.Trace
 
 type ModelState = (String, [(Int, Int)])
 type FastModel = Array Int ModelState
@@ -29,9 +30,9 @@ toFrequencySelector = V.fromList . concatMap stretch
 nextWeightedRandom :: WeightedGenerator
 nextWeightedRandom = do
   (g, fs ) <- get
-  let (i, g') = randomR (0, V.length fs) g
+  let (i, g') = randomR (0, V.length fs - 1) g
   put (g', fs)
   return (fs V.! i)
 
 weightedRandomList :: (StdGen, FrequencySelector) -> [Int]
-weightedRandomList = evalState $ repeat <$> nextWeightedRandom
+weightedRandomList = evalState $ mapM (\_ -> nextWeightedRandom) [1..]

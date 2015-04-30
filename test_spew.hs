@@ -4,7 +4,7 @@ import Test.QuickCheck
 import Control.Monad
 import Control.Applicative
 import Data.Maybe
-
+import Debug.Trace
 import qualified Data.Foldable as F
 import qualified Data.Vector as V
 import qualified Data.Map.Lazy as M
@@ -20,7 +20,9 @@ countOccurrences' :: (F.Foldable t, Ord a) => t a -> [(a, Int)]
 countOccurrences' = M.assocs . countOccurrences
 
 genPairs :: Gen [(Int, Int)]
-genPairs = sized (return . ($ zip [1..] [1..]) . take)
+genPairs = sized (return . ($ zip [1..] [1..]) . take . constrain)
+    where constrain = (max 1) . (mod 100) . (max 1) . abs
+
 
 genFreqSelector :: Gen FrequencySelector
 genFreqSelector = toFrequencySelector <$> genPairs
@@ -48,8 +50,9 @@ prop_CorrectDistribution xs = all diffOk $ zip xs $ drop 1 xs
 
 
 
-
 main = do
   quickCheck $ forAll genPairs prop_CorrectLength
   quickCheck $ forAll genFreqSelector prop_CorrectOccurrences
+  quickCheck $ forAll genIncreasingRandomList $ not .  null
+  -- Something seems to be wrong with this generator ?
   quickCheck $ forAll genIncreasingRandomList prop_CorrectDistribution
