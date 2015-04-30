@@ -1,0 +1,496 @@
+\documentclass{article}
+\usepackage{fancyvrb}
+\usepackage{color}
+\usepackage[utf8]{inputenc}
+
+\renewcommand{\theFancyVerbLine}{\textcolor{red}{\small\arabic{FancyVerbLine}}}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{textpos}
+\usepackage{mathtools}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage[english]{babel}
+\usepackage{centernot}
+
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.13,0.55,0.13}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.41,0.55}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.71,0.32,0.80}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.71,0.32,0.80}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.55,0.00,0.55}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.41,0.55}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.71,0.32,0.80}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.12,0.53,0.61}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.67,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.80,0.33,0.33}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@ul=\underline\def\PY@tc##1{\textcolor[rgb]{0.00,0.55,0.27}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.41,0.55}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.55,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.55,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.55,0.27}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.44,0.48,0.49}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.55,0.27}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.55,0.27}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.80,0.33,0.33}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.11,0.49,0.44}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.41,0.55}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.55,0.00,0.55}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.41,0.55}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.80,0.33,0.33}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.33,0.33,0.33}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.55,0.00,0.55}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.80,0.42,0.13}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.55,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.13,0.55,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.55,0.00,0.55}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.13,0.55,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.71,0.32,0.80}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.65,0.09,0.09}{##1}}\def\PY@bc##1{\setlength{\fboxsep}{0pt}\colorbox[rgb]{0.89,0.82,0.82}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.55,0.00,0.55}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.80,0.33,0.33}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.11,0.49,0.44}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.71,0.32,0.80}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.71,0.32,0.80}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.55,0.00,0.55}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.55,0.00,0.55}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.80,0.33,0.33}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.55,0.00,0.55}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.65,0.65,0.65}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.80,0.33,0.33}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.80,0.33,0.33}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.55,0.00,0.55}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.80,0.33,0.33}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.80,0.33,0.33}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+\begin{document}
+% Do not modify
+\begin{textblock*}{3cm}(-1.7cm,-2.6cm)
+  \noindent {\scriptsize Staple here!}
+\end{textblock*}
+
+% Do not modify
+\begin{textblock*}{4cm}(-1.7cm,-2.3cm)
+  \noindent {\scriptsize CMSC 22311 Spring 2015}
+\end{textblock*}
+
+% Do not modify other than putting your name where stated
+\begin{textblock*}{8cm}(12.5cm,-1cm)
+  \noindent {Name: Patrick Collins}
+\end{textblock*}
+% Do not modify other than putting your section (1 or 2) where stated
+\begin{textblock*}{3cm}(12.5cm,-0.5cm)
+  \noindent {Section: 1}
+\end{textblock*}
+% Do not modify other than typing your acknowledgement where stated
+\begin{textblock*}{13.5cm}(-1.7cm,-1.8cm)
+  \noindent \textit{I worked on this assignment with Kira Ghandhi.}
+\end{textblock*}
+
+\vspace{1cm}
+
+% Do not modify other than typing the homework number after #
+\begin{center}
+  \textbf{\Large Lab 1}
+\end{center}
+
+\section{Suck.hs}
+%WORK_HERE
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+\PY{k+kr}{module} \PY{n+nn}{Suck} \PY{k+kr}{where}
+\PY{k+kr}{import} \PY{k}{qualified} \PY{n+nn}{Data.Map} \PY{k}{as} \PY{n}{M}
+\PY{k+kr}{import} \PY{n+nn}{Data.Map} \PY{p}{(}\PY{n+nf}{empty}\PY{p}{,} \PY{n+nf}{insertWith}\PY{p}{,} \PY{k+kt}{Map}\PY{p}{,} \PY{n+nf}{mapWithKey}\PY{p}{,} \PY{n+nf}{lookupIndex}\PY{p}{,} \PY{n+nf}{unionsWith}\PY{p}{)}
+\PY{k+kr}{import} \PY{n+nn}{Data.Tuple} \PY{p}{(}\PY{n+nf}{swap}\PY{p}{)}
+\PY{k+kr}{import} \PY{n+nn}{Data.Maybe}
+\PY{k+kr}{import} \PY{n+nn}{Data.Monoid}
+\PY{k+kr}{import} \PY{n+nn}{Control.Applicative} \PY{p}{(}\PY{p}{(}\PY{o}{\PYZlt{}\PYZdl{}\PYZgt{}}\PY{p}{)}\PY{p}{)}
+\PY{k+kr}{import} \PY{n+nn}{Data.Char} \PY{p}{(}\PY{n+nf}{isAscii}\PY{p}{)}
+
+\PY{k+kr}{import} \PY{n+nn}{Text.HTML.TagSoup}
+\PY{k+kr}{import} \PY{n+nn}{Text.HTML.TagSoup.Tree}
+
+\PY{k+kr}{type} \PY{k+kt}{PrimitiveModel} \PY{o+ow}{=} \PY{k+kt}{Map} \PY{p}{(}\PY{k+kt}{String}\PY{p}{,} \PY{k+kt}{String}\PY{p}{)} \PY{p}{[}\PY{k+kt}{String}\PY{p}{]}
+\PY{k+kr}{type} \PY{k+kt}{FrequencyModel} \PY{o+ow}{=} \PY{k+kt}{Map} \PY{p}{(}\PY{k+kt}{String}\PY{p}{,} \PY{k+kt}{String}\PY{p}{)} \PY{p}{[}\PY{p}{(}\PY{k+kt}{Int}\PY{p}{,} \PY{k+kt}{String}\PY{p}{)}\PY{p}{]}
+\PY{k+kr}{type} \PY{k+kt}{FrequencyCounter} \PY{o+ow}{=} \PY{k+kt}{Map} \PY{k+kt}{String} \PY{k+kt}{Int}
+\PY{k+kr}{type} \PY{k+kt}{PreProcessedModel} \PY{o+ow}{=} \PY{k+kt}{Map} \PY{p}{(}\PY{k+kt}{String}\PY{p}{,} \PY{k+kt}{String}\PY{p}{)} \PY{p}{[}\PY{p}{(}\PY{k+kt}{Int}\PY{p}{,} \PY{k+kt}{Int}\PY{p}{)}\PY{p}{]}
+\PY{k+kr}{type} \PY{k+kt}{ProcessedModel} \PY{o+ow}{=} \PY{p}{[}\PY{p}{(}\PY{k+kt}{String}\PY{p}{,} \PY{p}{[}\PY{p}{(}\PY{k+kt}{Int}\PY{p}{,} \PY{k+kt}{Int}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+
+
+\PY{n+nf}{searchTree} \PY{o+ow}{::} \PY{p}{(}\PY{k+kt}{TagTree} \PY{k+kt}{String} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{k+kt}{TagTree} \PY{k+kt}{String}\PY{p}{]}\PY{p}{)} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{k+kt}{TagTree} \PY{k+kt}{String}\PY{p}{]} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{k+kt}{TagTree} \PY{k+kt}{String}\PY{p}{]}
+\PY{n+nf}{searchTree} \PY{n}{f} \PY{k+kt}{[]} \PY{o+ow}{=} \PY{k+kt}{[]}
+\PY{n+nf}{searchTree} \PY{n}{f} \PY{p}{(}\PY{n}{b}\PY{k+kt}{:}\PY{n}{ts}\PY{p}{)} \PY{o+ow}{=} \PY{n}{f} \PY{n}{b} \PY{o}{++} \PY{n}{searchTree} \PY{n}{f} \PY{n}{ts}
+
+\PY{n+nf}{treeHasAttribute} \PY{o+ow}{::} \PY{k+kt}{Attribute} \PY{k+kt}{String} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{TagTree} \PY{k+kt}{String} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{k+kt}{TagTree} \PY{k+kt}{String}\PY{p}{]}
+\PY{n+nf}{treeHasAttribute} \PY{n}{attr} \PY{p}{(}\PY{k+kt}{TagLeaf} \PY{k+kr}{\PYZus{}}\PY{p}{)} \PY{o+ow}{=} \PY{k+kt}{[]}
+\PY{n+nf}{treeHasAttribute} \PY{n}{attr} \PY{p}{(}\PY{k+kt}{TagBranch} \PY{k+kr}{\PYZus{}}  \PY{n}{attrs} \PY{n}{children}\PY{p}{)}
+    \PY{o}{|} \PY{n}{attr} \PY{p}{`}\PY{n}{elem}\PY{p}{`} \PY{n}{attrs} \PY{o+ow}{=} \PY{n}{children}
+    \PY{o}{|} \PY{n}{otherwise} \PY{o+ow}{=} \PY{n}{concat} \PY{o}{\PYZdl{}} \PY{n}{map} \PY{p}{(}\PY{n}{treeHasAttribute} \PY{n}{attr}\PY{p}{)} \PY{n}{children}
+
+\PY{n+nf}{extractBody} \PY{o+ow}{::} \PY{k+kt}{String} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{String}
+\PY{n+nf}{extractBody} \PY{o+ow}{=} \PY{n}{filter} \PY{n}{isAscii} \PY{o}{.} \PY{n}{innerText} \PY{o}{.} \PY{n}{flattenTree} \PY{o}{.}
+              \PY{n}{searchTree} \PY{p}{(}\PY{n}{treeHasAttribute} \PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{id}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{body}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{)} \PY{o}{.} \PY{n}{tagTree} \PY{o}{.} \PY{n}{parseTags}
+
+\PY{n+nf}{toPrimModel} \PY{o+ow}{::} \PY{k+kt}{String} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{PrimitiveModel}
+\PY{n+nf}{toPrimModel} \PY{o+ow}{=} \PY{n}{foldl} \PY{n}{updateMap} \PY{p}{(}\PY{n}{empty} \PY{o+ow}{::} \PY{k+kt}{PrimitiveModel}\PY{p}{)} \PY{o}{.} \PY{n}{byTriples} \PY{o}{.} \PY{n}{words}
+    \PY{k+kr}{where} \PY{n}{byTriples} \PY{n}{ss} \PY{o+ow}{=} \PY{n}{zip3} \PY{n}{ss} \PY{p}{(}\PY{n}{drop} \PY{l+m+mi}{1} \PY{n}{ss}\PY{p}{)} \PY{p}{(}\PY{n}{drop} \PY{l+m+mi}{2} \PY{n}{ss}\PY{p}{)}
+          \PY{n}{updateMap} \PY{n}{m} \PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{,} \PY{n}{z}\PY{p}{)} \PY{o+ow}{=} \PY{n}{insertWith} \PY{p}{(}\PY{o}{++}\PY{p}{)} \PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)} \PY{p}{[}\PY{n}{z}\PY{p}{]} \PY{n}{m}
+
+\PY{n+nf}{toFreqModel} \PY{o+ow}{::} \PY{k+kt}{PrimitiveModel} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{FrequencyModel}
+\PY{n+nf}{toFreqModel} \PY{o+ow}{=} \PY{k+kt}{M}\PY{o}{.}\PY{n}{map} \PY{o}{\PYZdl{}} \PY{n}{map} \PY{n}{swap} \PY{o}{.} \PY{k+kt}{M}\PY{o}{.}\PY{n}{assocs} \PY{o}{.} \PY{n}{countFreq}
+    \PY{k+kr}{where} \PY{n}{countingInsert} \PY{o+ow}{=} \PY{n}{flip} \PY{o}{\PYZdl{}} \PY{p}{(}\PY{n}{flip} \PY{o}{\PYZdl{}} \PY{n}{insertWith} \PY{p}{(}\PY{o}{+}\PY{p}{)}\PY{p}{)} \PY{l+m+mi}{1}
+          \PY{n}{countFreq} \PY{o+ow}{=} \PY{n}{foldl} \PY{n}{countingInsert} \PY{p}{(}\PY{n}{empty} \PY{o+ow}{::} \PY{k+kt}{FrequencyCounter}\PY{p}{)}
+
+\PY{n+nf}{toProcessedModel} \PY{o+ow}{::} \PY{k+kt}{FrequencyModel} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{ProcessedModel}
+\PY{n+nf}{toProcessedModel} \PY{n}{m} \PY{o+ow}{=} \PY{n}{map} \PY{n}{stripFirst} \PY{o}{\PYZdl{}} \PY{k+kt}{M}\PY{o}{.}\PY{n}{assocs} \PY{o}{\PYZdl{}} \PY{n}{mapWithKey} \PY{n}{relabel} \PY{n}{m}
+    \PY{k+kr}{where} \PY{n}{stripFirst} \PY{p}{(}\PY{p}{(}\PY{k+kr}{\PYZus{}}\PY{p}{,} \PY{n}{y}\PY{p}{)}\PY{p}{,} \PY{n}{vs}\PY{p}{)} \PY{o+ow}{=} \PY{p}{(}\PY{n}{y}\PY{p}{,} \PY{n}{vs}\PY{p}{)}
+          \PY{n}{relabel} \PY{p}{(}\PY{k+kr}{\PYZus{}}\PY{p}{,} \PY{n}{y}\PY{p}{)} \PY{o+ow}{=} \PY{n}{mapMaybe} \PY{o}{\PYZdl{}} \PY{n}{idxOfPairs} \PY{n}{y}
+          \PY{n}{idxOfPairs} \PY{n}{y} \PY{p}{(}\PY{n}{count}\PY{p}{,} \PY{n}{z}\PY{p}{)} \PY{o+ow}{=} \PY{p}{(}\PY{p}{,}\PY{p}{)} \PY{n}{count} \PY{o}{\PYZlt{}\PYZdl{}\PYZgt{}} \PY{n}{lookupIndex} \PY{p}{(}\PY{n}{y}\PY{p}{,} \PY{n}{z}\PY{p}{)} \PY{n}{m}
+
+\PY{n+nf}{mergePrimModels} \PY{o+ow}{::} \PY{p}{[}\PY{k+kt}{PrimitiveModel}\PY{p}{]} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{PrimitiveModel}
+\PY{n+nf}{mergePrimModels} \PY{o+ow}{=} \PY{p}{(}\PY{n}{unionsWith} \PY{p}{(}\PY{o}{++}\PY{p}{)}\PY{p}{)}
+
+\PY{n+nf}{bodyTextsToModel} \PY{o+ow}{::} \PY{p}{[}\PY{k+kt}{String}\PY{p}{]} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{ProcessedModel}
+\PY{n+nf}{bodyTextsToModel} \PY{o+ow}{=} \PY{n}{process} \PY{o}{.} \PY{n}{mergePrimModels} \PY{o}{.} \PY{n}{getPrimModels}
+    \PY{k+kr}{where} \PY{n}{process} \PY{o+ow}{=} \PY{n}{toProcessedModel} \PY{o}{.} \PY{n}{toFreqModel}
+          \PY{n}{getPrimModels} \PY{o+ow}{=} \PY{n}{map} \PY{p}{(}\PY{n}{toPrimModel} \PY{o}{.} \PY{n}{extractBody}\PY{p}{)}
+\end{Verbatim}
+
+\pagebreak
+
+\section{Spew.hs}
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+\PY{k+kr}{module} \PY{n+nn}{Spew} \PY{k+kr}{where}
+
+\PY{k+kr}{import} \PY{n+nn}{Data.Array} \PY{p}{(}\PY{n+nf}{listArray}\PY{p}{,} \PY{k+kt}{Array}\PY{p}{)}
+\PY{k+kr}{import} \PY{k}{qualified} \PY{n+nn}{Data.Array} \PY{k}{as} \PY{n}{A}
+\PY{k+kr}{import} \PY{n+nn}{System.Random}
+\PY{k+kr}{import} \PY{n+nn}{Control.Monad.State.Lazy}
+\PY{k+kr}{import} \PY{n+nn}{Control.Monad.Writer.Lazy}
+\PY{k+kr}{import} \PY{n+nn}{Control.Applicative}
+\PY{k+kr}{import} \PY{k}{qualified} \PY{n+nn}{Data.Vector} \PY{k}{as} \PY{n}{V}
+\PY{k+kr}{import} \PY{n+nn}{Debug.Trace}
+
+
+\PY{k+kr}{type} \PY{k+kt}{PrimFastModel} \PY{o+ow}{=} \PY{p}{[}\PY{p}{(}\PY{k+kt}{String}\PY{p}{,} \PY{k+kt}{FrequencySelector}\PY{p}{)}\PY{p}{]}
+\PY{k+kr}{type} \PY{k+kt}{FastModel} \PY{o+ow}{=} \PY{k+kt}{Array} \PY{k+kt}{Int} \PY{p}{(}\PY{k+kt}{String}\PY{p}{,} \PY{k+kt}{FrequencySelector}\PY{p}{)}
+
+\PY{c+c1}{\PYZhy{}\PYZhy{} We pay a space cost up front for this, but save ourselves}
+\PY{c+c1}{\PYZhy{}\PYZhy{} computation later down the line. Given that most state transitions}
+\PY{c+c1}{\PYZhy{}\PYZhy{} have a frequency of only 1 or 2 (based on a cursory look over}
+\PY{c+c1}{\PYZhy{}\PYZhy{} sokal.model), it seems likely that the space cost won\PYZsq{}t be high.}
+\PY{k+kr}{type} \PY{k+kt}{FrequencySelector} \PY{o+ow}{=} \PY{k+kt}{V}\PY{o}{.}\PY{k+kt}{Vector} \PY{k+kt}{Int}
+
+
+\PY{n+nf}{toFrequencySelector} \PY{o+ow}{::} \PY{p}{[}\PY{p}{(}\PY{k+kt}{Int}\PY{p}{,} \PY{k+kt}{Int}\PY{p}{)}\PY{p}{]} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{FrequencySelector}
+\PY{n+nf}{toFrequencySelector} \PY{o+ow}{=} \PY{k+kt}{V}\PY{o}{.}\PY{n}{fromList} \PY{o}{.} \PY{n}{concatMap} \PY{n}{stretch}
+    \PY{k+kr}{where} \PY{n}{stretch} \PY{p}{(}\PY{n}{fr}\PY{p}{,} \PY{n}{idx}\PY{p}{)} \PY{o+ow}{=} \PY{n}{replicate} \PY{n}{fr} \PY{n}{idx}
+
+
+\PY{n+nf}{deserialize} \PY{o+ow}{::} \PY{k+kt}{String} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{PrimFastModel}
+\PY{n+nf}{deserialize} \PY{o+ow}{=} \PY{n}{map} \PY{p}{(}\PY{n}{makeTrans} \PY{o}{.} \PY{n}{read}\PY{p}{)} \PY{o}{.}  \PY{n}{lines}
+    \PY{k+kr}{where} \PY{n}{makeTrans} \PY{p}{(}\PY{n}{s}\PY{p}{,} \PY{n}{is}\PY{p}{)} \PY{o+ow}{=} \PY{p}{(}\PY{n}{s}\PY{p}{,} \PY{n}{toFrequencySelector} \PY{n}{is}\PY{p}{)}
+
+\PY{n+nf}{fromPrim} \PY{o+ow}{::} \PY{k+kt}{PrimFastModel} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{FastModel}
+\PY{n+nf}{fromPrim} \PY{n}{xs} \PY{o+ow}{=} \PY{n}{listArray} \PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{length} \PY{n}{xs}\PY{p}{)} \PY{n}{xs}
+
+\PY{n+nf}{randomIdx} \PY{o+ow}{::} \PY{k+kt}{FastModel} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{StdGen} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{(}\PY{k+kt}{Int}\PY{p}{,} \PY{k+kt}{StdGen}\PY{p}{)}
+\PY{n+nf}{randomIdx} \PY{n}{m} \PY{n}{g} \PY{o+ow}{=} \PY{n}{randomR} \PY{p}{(}\PY{k+kt}{A}\PY{o}{.}\PY{n}{bounds} \PY{n}{m}\PY{p}{)} \PY{n}{g}
+
+\PY{n+nf}{walkModel} \PY{o+ow}{::} \PY{k+kt}{FastModel} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{WriterT} \PY{p}{[}\PY{k+kt}{String}\PY{p}{]} \PY{p}{(}\PY{k+kt}{State} \PY{p}{(}\PY{k+kt}{StdGen}\PY{p}{,} \PY{k+kt}{Int}\PY{p}{)}\PY{p}{)} \PY{n+nb}{()}
+\PY{n+nf}{walkModel} \PY{n}{model} \PY{o+ow}{=}
+    \PY{k+kr}{do}
+      \PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{idx}\PY{p}{)} \PY{o+ow}{\PYZlt{}\PYZhy{}} \PY{n}{get}
+      \PY{k+kr}{let} \PY{p}{(}\PY{n}{s}\PY{p}{,} \PY{n}{fs}\PY{p}{)} \PY{o+ow}{=} \PY{n}{model} \PY{k+kt}{A}\PY{o}{.!} \PY{n}{idx}
+      \PY{k+kr}{let} \PY{n}{stuck} \PY{o+ow}{=} \PY{k+kt}{V}\PY{o}{.}\PY{n}{null} \PY{n}{fs}
+      \PY{n}{tell} \PY{p}{[}\PY{n}{s} \PY{o}{++} \PY{k+kr}{if} \PY{n}{stuck} \PY{k+kr}{then} \PY{l+s}{\PYZdq{}}\PY{l+s}{.}\PY{l+s}{\PYZdq{}} \PY{k+kr}{else} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZdq{}}\PY{p}{]}
+      \PY{k+kr}{let} \PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{g\PYZsq{}}\PY{p}{)} \PY{o+ow}{=} \PY{n}{randomR} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{k+kt}{V}\PY{o}{.}\PY{n}{length} \PY{n}{fs} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{n}{g}
+      \PY{k+kr}{let} \PY{p}{(}\PY{n}{j}\PY{p}{,} \PY{n}{g\PYZsq{}\PYZsq{}}\PY{p}{)} \PY{o+ow}{=} \PY{n}{randomIdx} \PY{n}{model} \PY{n}{g}
+      \PY{n}{put} \PY{p}{(}\PY{n}{g\PYZsq{}\PYZsq{}}\PY{p}{,} \PY{k+kr}{if} \PY{n}{stuck} \PY{k+kr}{then} \PY{n}{j} \PY{k+kr}{else} \PY{n}{fs} \PY{k+kt}{V}\PY{o}{.!} \PY{n}{i}\PY{p}{)}
+
+
+\PY{n+nf}{runModel} \PY{o+ow}{::} \PY{k+kt}{StdGen} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{FastModel} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{k+kt}{String}\PY{p}{]}
+\PY{n+nf}{runModel} \PY{n}{g} \PY{n}{model} \PY{o+ow}{=} \PY{p}{(}\PY{n}{evalState} \PY{o}{\PYZdl{}} \PY{n}{execWriterT} \PY{o}{\PYZdl{}} \PY{n}{mapM} \PY{p}{(}\PY{n+nf}{\PYZbs{}}\PY{k+kr}{\PYZus{}} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{n}{walker}\PY{p}{)} \PY{p}{[}\PY{l+m+mi}{1}\PY{o}{..}\PY{p}{]}\PY{p}{)} \PY{p}{(}\PY{n}{g\PYZsq{}}\PY{p}{,} \PY{n}{idx}\PY{p}{)}
+    \PY{k+kr}{where} \PY{n}{walker} \PY{o+ow}{=} \PY{n}{walkModel} \PY{n}{model}
+          \PY{p}{(}\PY{n}{idx}\PY{p}{,} \PY{n}{g\PYZsq{}}\PY{p}{)} \PY{o+ow}{=} \PY{n}{randomIdx} \PY{n}{model} \PY{n}{g}
+
+\PY{n+nf}{takeUntil} \PY{o+ow}{::} \PY{p}{(}\PY{n}{a} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{Bool}\PY{p}{)} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{n}{a}\PY{p}{]} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{n}{a}\PY{p}{]}
+\PY{n+nf}{takeUntil} \PY{n}{f} \PY{k+kt}{[]} \PY{o+ow}{=} \PY{k+kt}{[]}
+\PY{n+nf}{takeUntil} \PY{n}{f} \PY{p}{[}\PY{n}{x}\PY{p}{]} \PY{o+ow}{=} \PY{p}{[}\PY{n}{x}\PY{p}{]}
+\PY{n+nf}{takeUntil} \PY{n}{f} \PY{p}{(}\PY{n}{x}\PY{k+kt}{:}\PY{n}{y}\PY{k+kt}{:}\PY{n}{xs}\PY{p}{)}
+    \PY{o}{|} \PY{n}{f} \PY{n}{y} \PY{o+ow}{=} \PY{p}{[}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{]}
+    \PY{o}{|} \PY{n}{otherwise} \PY{o+ow}{=} \PY{n}{x}\PY{k+kt}{:}\PY{p}{(}\PY{n}{takeUntil} \PY{n}{f} \PY{p}{(}\PY{n}{y}\PY{k+kt}{:}\PY{n}{xs}\PY{p}{)}\PY{p}{)}
+
+\PY{n+nf}{isTerminator} \PY{o+ow}{::} \PY{k+kt}{Char} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{Bool}
+\PY{n+nf}{isTerminator} \PY{l+s+sc}{\PYZsq{}}\PY{l+s+sc}{.}\PY{l+s+sc}{\PYZsq{}} \PY{o+ow}{=} \PY{k+kt}{True}
+\PY{n+nf}{isTerminator} \PY{l+s+sc}{\PYZsq{}}\PY{l+s+sc}{?}\PY{l+s+sc}{\PYZsq{}} \PY{o+ow}{=} \PY{k+kt}{True}
+\PY{n+nf}{isTerminator} \PY{l+s+sc}{\PYZsq{}}\PY{l+s+sc}{!}\PY{l+s+sc}{\PYZsq{}} \PY{o+ow}{=} \PY{k+kt}{True}
+\PY{n+nf}{isTerminator} \PY{k+kr}{\PYZus{}} \PY{o+ow}{=} \PY{k+kt}{False}
+
+\PY{n+nf}{sentenceFinished} \PY{o+ow}{::} \PY{k+kt}{String} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{Bool}
+\PY{n+nf}{sentenceFinished} \PY{o+ow}{=} \PY{n}{any} \PY{n}{isTerminator}
+
+\PY{n+nf}{takeAtLeast} \PY{o+ow}{::} \PY{k+kt}{Int} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{k+kt}{String}\PY{p}{]} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{k+kt}{String}\PY{p}{]}
+\PY{n+nf}{takeAtLeast} \PY{n}{n} \PY{n}{ss} \PY{o+ow}{=} \PY{n}{body} \PY{o}{++} \PY{n}{terminator}
+    \PY{k+kr}{where} \PY{p}{(}\PY{n}{body}\PY{p}{,} \PY{n}{rest}\PY{p}{)} \PY{o+ow}{=} \PY{n}{splitAt} \PY{n}{n} \PY{n}{ss}
+          \PY{n}{terminator} \PY{o+ow}{=} \PY{n}{takeUntil} \PY{n}{sentenceFinished} \PY{n}{rest}
+
+\PY{n+nf}{linefill} \PY{o+ow}{::} \PY{k+kt}{Int} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{k+kt}{String}\PY{p}{]} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{String}
+\PY{n+nf}{linefill} \PY{k+kr}{\PYZus{}} \PY{k+kt}{[]} \PY{o+ow}{=} \PY{l+s}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{n}\PY{l+s}{\PYZdq{}}
+\PY{n+nf}{linefill} \PY{n}{n} \PY{p}{(}\PY{n}{x}\PY{k+kt}{:}\PY{n}{xs}\PY{p}{)} \PY{o+ow}{=} \PY{n}{iter} \PY{n}{x} \PY{n}{xs} \PY{k+kr}{where}
+    \PY{n}{iter} \PY{n}{x} \PY{p}{(}\PY{n}{y}\PY{k+kt}{:}\PY{n}{ys}\PY{p}{)}
+        \PY{o}{|} \PY{n}{length} \PY{n}{x} \PY{o}{+} \PY{n}{length} \PY{n}{y} \PY{o}{+} \PY{l+m+mi}{1} \PY{o}{\PYZgt{}} \PY{n}{n} \PY{o+ow}{=} \PY{n}{x} \PY{o}{++} \PY{l+s}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{n}\PY{l+s}{\PYZdq{}} \PY{o}{++} \PY{n}{linefill} \PY{n}{n} \PY{p}{(}\PY{n}{y}\PY{k+kt}{:}\PY{n}{ys}\PY{p}{)}
+        \PY{o}{|} \PY{n}{otherwise}                   \PY{o+ow}{=} \PY{n}{iter} \PY{p}{(}\PY{n}{x} \PY{o}{++} \PY{l+s}{\PYZdq{}}\PY{l+s}{ }\PY{l+s}{\PYZdq{}} \PY{o}{++} \PY{n}{y}\PY{p}{)} \PY{n}{ys}
+    \PY{n}{iter} \PY{n}{x} \PY{k+kt}{[]} \PY{o+ow}{=} \PY{n}{x} \PY{o}{++} \PY{l+s}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{n}\PY{l+s}{\PYZdq{}}
+\end{Verbatim}
+\pagebreak
+\section{test\_suck.hs}
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+\PY{k+kr}{import} \PY{n+nn}{Suck}
+
+\PY{k+kr}{import} \PY{n+nn}{Data.Map}
+\PY{k+kr}{import} \PY{n+nn}{Test.HUnit}
+
+
+\PY{n+nf}{bodyWords} \PY{o+ow}{=} \PY{n}{words} \PY{o}{.} \PY{n}{extractBody}
+\PY{n+nf}{htmlToPrimModel} \PY{o+ow}{=} \PY{n}{toPrimModel} \PY{o}{.} \PY{n}{extractBody}
+\PY{n+nf}{htmlToFreqModel} \PY{o+ow}{=} \PY{n}{toFreqModel} \PY{o}{.} \PY{n}{htmlToPrimModel}
+\PY{n+nf}{htmlToProcessedModel} \PY{o+ow}{=} \PY{n}{toProcessedModel} \PY{o}{.} \PY{n}{htmlToFreqModel}
+
+\PY{n+nf}{main} \PY{o+ow}{=} \PY{n}{runTestTT} \PY{o}{\PYZdl{}} \PY{k+kt}{TestList} \PY{p}{[}
+        \PY{n}{testBody1} \PY{o}{\PYZti{}=?} \PY{n}{bodyWords} \PY{n}{testString1}
+       \PY{p}{,} \PY{n}{testBody2} \PY{o}{\PYZti{}=?} \PY{n}{bodyWords} \PY{n}{testString2}
+       \PY{p}{,} \PY{n}{testBody3} \PY{o}{\PYZti{}=?} \PY{n}{bodyWords} \PY{n}{testString3}
+       \PY{p}{,} \PY{n}{testModel1} \PY{o}{\PYZti{}=?} \PY{n}{htmlToPrimModel} \PY{n}{testString1}
+       \PY{p}{,} \PY{n}{testModel2} \PY{o}{\PYZti{}=?} \PY{n}{htmlToPrimModel} \PY{n}{testString2}
+       \PY{p}{,} \PY{n}{testFreqModel1} \PY{o}{\PYZti{}=?} \PY{n}{htmlToFreqModel} \PY{n}{testString1}
+       \PY{p}{,} \PY{n}{testFreqModel2} \PY{o}{\PYZti{}=?} \PY{n}{htmlToFreqModel} \PY{n}{testString2}
+       \PY{p}{,} \PY{n}{testProcessedModel2} \PY{o}{\PYZti{}=?} \PY{n}{htmlToProcessedModel} \PY{n}{testString2}
+       \PY{p}{,} \PY{n}{testModel1Double} \PY{o}{\PYZti{}=?} \PY{n}{mergePrimModels} \PY{p}{[}\PY{n}{testModel1}\PY{p}{,} \PY{n}{testModel1}\PY{p}{]}
+       \PY{p}{,} \PY{n}{testBody3} \PY{o}{\PYZti{}=?} \PY{n}{bodyWords} \PY{n}{testString4}\PY{p}{]}
+
+
+\PY{n+nf}{testString1} \PY{o+ow}{=} \PY{n}{unlines} \PY{p}{[}
+               \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}div id=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{body}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}p\PYZgt{}Hello World Today\PYZlt{}/p\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}/div\PYZgt{}}\PY{l+s}{\PYZdq{}}\PY{p}{]}
+
+\PY{n+nf}{testBody1} \PY{o+ow}{=} \PY{p}{[}\PY{l+s}{\PYZdq{}}\PY{l+s}{Hello}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{World}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Today}\PY{l+s}{\PYZdq{}}\PY{p}{]}
+\PY{n+nf}{testModel1} \PY{o+ow}{=} \PY{n}{fromList} \PY{p}{[}\PY{p}{(}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Hello}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{World}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{[}\PY{l+s}{\PYZdq{}}\PY{l+s}{Today}\PY{l+s}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+\PY{n+nf}{testModel1Double} \PY{o+ow}{=} \PY{n}{fromList} \PY{p}{[}\PY{p}{(}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Hello}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{World}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{[}\PY{l+s}{\PYZdq{}}\PY{l+s}{Today}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Today}\PY{l+s}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+\PY{n+nf}{testFreqModel1} \PY{o+ow}{=} \PY{n}{fromList} \PY{p}{[}\PY{p}{(}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Hello}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{World}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{[}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Today}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+
+
+\PY{n+nf}{testString2} \PY{o+ow}{=} \PY{n}{unlines} \PY{p}{[}
+               \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}div id=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{body}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}p\PYZgt{}Hello World Today I\PYZlt{}/p\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}/div\PYZgt{}}\PY{l+s}{\PYZdq{}}\PY{p}{]}
+\PY{n+nf}{testBody2} \PY{o+ow}{=} \PY{p}{[}\PY{l+s}{\PYZdq{}}\PY{l+s}{Hello}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{World}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Today}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{I}\PY{l+s}{\PYZdq{}}\PY{p}{]}
+\PY{n+nf}{testModel2} \PY{o+ow}{=} \PY{n}{fromList} \PY{p}{[}
+              \PY{p}{(}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Hello}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{World}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{[}\PY{l+s}{\PYZdq{}}\PY{l+s}{Today}\PY{l+s}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+             \PY{p}{,} \PY{p}{(}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{World}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Today}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{[}\PY{l+s}{\PYZdq{}}\PY{l+s}{I}\PY{l+s}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+\PY{n+nf}{testFreqModel2} \PY{o+ow}{=} \PY{n}{fromList} \PY{p}{[}
+                  \PY{p}{(}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Hello}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{World}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{[}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Today}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+                 \PY{p}{,} \PY{p}{(}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{World}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{Today}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{[}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{I}\PY{l+s}{\PYZdq{}}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+\PY{n+nf}{testProcessedModel2} \PY{o+ow}{=} \PY{p}{[}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{World}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{p}{[}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Today}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{k+kt}{[]}\PY{p}{)}\PY{p}{]}
+
+
+\PY{n+nf}{testString3} \PY{o+ow}{=} \PY{n}{unlines} \PY{p}{[}
+              \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}div class=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{contrib}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}a href=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{/}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}Author\PYZlt{}/a\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}div class=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{abstract}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}strong\PYZgt{}Abstract\PYZlt{}/strong\PYZgt{}\PYZlt{}p\PYZgt{} if not the unconscious. \PYZlt{}/p\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}/div\PYZgt{} }\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}div id=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{body}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}blockquote class=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{disp\PYZhy{}quote}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}p\PYZgt{}Human soul, let us see.\PYZlt{}/p\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}/div\PYZgt{}}\PY{l+s}{\PYZdq{}}\PY{p}{]}
+
+\PY{n+nf}{testBody3} \PY{o+ow}{=} \PY{n}{words} \PY{l+s}{\PYZdq{}}\PY{l+s}{Human soul, let us see.}\PY{l+s}{\PYZdq{}}
+
+\PY{n+nf}{testString4} \PY{o+ow}{=} \PY{n}{unlines} \PY{p}{[}
+              \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}div class=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{contrib}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}a href=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{/}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}Author\PYZlt{}/a\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}div class=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{abstract}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}strong\PYZgt{}Abstract\PYZlt{}/strong\PYZgt{}\PYZlt{}p\PYZgt{} if not the unconscious. \PYZlt{}/p\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}/div\PYZgt{} }\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}div\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}div id=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{body}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}blockquote class=}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{disp\PYZhy{}quote}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}p\PYZgt{}Human soul, let us see.\PYZlt{}/p\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}/div\PYZgt{}}\PY{l+s}{\PYZdq{}}
+             \PY{p}{,} \PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZlt{}/div\PYZgt{}}\PY{l+s}{\PYZdq{}}\PY{p}{]}
+\end{Verbatim}
+
+
+\pagebreak
+\section{test\_spew.hs}
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+\PY{k+kr}{import} \PY{n+nn}{Spew}
+\PY{k+kr}{import} \PY{n+nn}{System.Random}
+\PY{k+kr}{import} \PY{n+nn}{Test.QuickCheck}
+\PY{k+kr}{import} \PY{n+nn}{Test.HUnit}
+\PY{k+kr}{import} \PY{n+nn}{Control.Monad}
+\PY{k+kr}{import} \PY{n+nn}{Control.Applicative}
+\PY{k+kr}{import} \PY{n+nn}{Data.Maybe}
+\PY{k+kr}{import} \PY{n+nn}{Control.Monad.State.Lazy}
+\PY{k+kr}{import} \PY{n+nn}{Control.Monad.Writer.Lazy}
+\PY{k+kr}{import} \PY{n+nn}{Data.Array} \PY{p}{(}\PY{n+nf}{listArray}\PY{p}{,} \PY{k+kt}{Array}\PY{p}{)}
+\PY{k+kr}{import} \PY{k}{qualified} \PY{n+nn}{Data.Array} \PY{k}{as} \PY{n}{A}
+
+
+\PY{k+kr}{import} \PY{k}{qualified} \PY{n+nn}{Data.Foldable} \PY{k}{as} \PY{n}{F}
+\PY{k+kr}{import} \PY{k}{qualified} \PY{n+nn}{Data.Vector} \PY{k}{as} \PY{n}{V}
+\PY{k+kr}{import} \PY{k}{qualified} \PY{n+nn}{Data.Map.Lazy} \PY{k}{as} \PY{n}{M}
+
+\PY{k+kr}{type} \PY{k+kt}{WeightedGenerator} \PY{o+ow}{=} \PY{k+kt}{State} \PY{p}{(}\PY{k+kt}{StdGen}\PY{p}{,} \PY{k+kt}{FrequencySelector}\PY{p}{)} \PY{k+kt}{Int}
+
+
+\PY{c+c1}{\PYZhy{}\PYZhy{} Quickcheck Tests}
+\PY{n+nf}{nextWeightedRandom} \PY{o+ow}{::} \PY{k+kt}{WeightedGenerator}
+\PY{n+nf}{nextWeightedRandom} \PY{o+ow}{=} \PY{k+kr}{do}
+  \PY{p}{(}\PY{n}{g}\PY{p}{,} \PY{n}{fs} \PY{p}{)} \PY{o+ow}{\PYZlt{}\PYZhy{}} \PY{n}{get}
+  \PY{k+kr}{let} \PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{g\PYZsq{}}\PY{p}{)} \PY{o+ow}{=} \PY{n}{randomR} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{k+kt}{V}\PY{o}{.}\PY{n}{length} \PY{n}{fs} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{n}{g}
+  \PY{n}{put} \PY{p}{(}\PY{n}{g\PYZsq{}}\PY{p}{,} \PY{n}{fs}\PY{p}{)}
+  \PY{n}{return} \PY{p}{(}\PY{n}{fs} \PY{k+kt}{V}\PY{o}{.!} \PY{n}{i}\PY{p}{)}
+
+\PY{n+nf}{weightedRandomList} \PY{o+ow}{::} \PY{p}{(}\PY{k+kt}{StdGen}\PY{p}{,} \PY{k+kt}{FrequencySelector}\PY{p}{)} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{k+kt}{Int}\PY{p}{]}
+\PY{n+nf}{weightedRandomList} \PY{o+ow}{=} \PY{n}{evalState} \PY{o}{\PYZdl{}} \PY{n}{mapM} \PY{p}{(}\PY{n+nf}{\PYZbs{}}\PY{k+kr}{\PYZus{}} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{n}{nextWeightedRandom}\PY{p}{)} \PY{p}{[}\PY{l+m+mi}{1}\PY{o}{..}\PY{p}{]}
+
+\PY{n+nf}{countOccurrences} \PY{o+ow}{::} \PY{p}{(}\PY{k+kt}{F}\PY{o}{.}\PY{k+kt}{Foldable} \PY{n}{t}\PY{p}{,} \PY{k+kt}{Ord} \PY{n}{a}\PY{p}{)} \PY{o+ow}{=\PYZgt{}} \PY{n}{t} \PY{n}{a} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{M}\PY{o}{.}\PY{k+kt}{Map} \PY{n}{a} \PY{k+kt}{Int}
+\PY{n+nf}{countOccurrences} \PY{o+ow}{=} \PY{k+kt}{F}\PY{o}{.}\PY{n}{foldl} \PY{n}{countingInsert} \PY{k+kt}{M}\PY{o}{.}\PY{n}{empty}
+    \PY{k+kr}{where} \PY{n}{countingInsert} \PY{o+ow}{=} \PY{n}{flip} \PY{o}{\PYZdl{}} \PY{p}{(}\PY{n}{flip} \PY{o}{\PYZdl{}} \PY{k+kt}{M}\PY{o}{.}\PY{n}{insertWith} \PY{p}{(}\PY{o}{+}\PY{p}{)}\PY{p}{)} \PY{l+m+mi}{1}
+
+
+\PY{n+nf}{countOccurrences\PYZsq{}} \PY{o+ow}{::} \PY{p}{(}\PY{k+kt}{F}\PY{o}{.}\PY{k+kt}{Foldable} \PY{n}{t}\PY{p}{,} \PY{k+kt}{Ord} \PY{n}{a}\PY{p}{)} \PY{o+ow}{=\PYZgt{}} \PY{n}{t} \PY{n}{a} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{p}{[}\PY{p}{(}\PY{n}{a}\PY{p}{,} \PY{k+kt}{Int}\PY{p}{)}\PY{p}{]}
+\PY{n+nf}{countOccurrences\PYZsq{}} \PY{o+ow}{=} \PY{k+kt}{M}\PY{o}{.}\PY{n}{assocs} \PY{o}{.} \PY{n}{countOccurrences}
+
+\PY{n+nf}{genPairs} \PY{o+ow}{::} \PY{k+kt}{Gen} \PY{p}{[}\PY{p}{(}\PY{k+kt}{Int}\PY{p}{,} \PY{k+kt}{Int}\PY{p}{)}\PY{p}{]}
+\PY{n+nf}{genPairs} \PY{o+ow}{=} \PY{n}{sized} \PY{p}{(}\PY{n}{return} \PY{o}{.} \PY{p}{(}\PY{o}{\PYZdl{}} \PY{n}{zip} \PY{p}{[}\PY{l+m+mi}{1}\PY{o}{..}\PY{p}{]} \PY{p}{[}\PY{l+m+mi}{1}\PY{o}{..}\PY{p}{]}\PY{p}{)} \PY{o}{.} \PY{n}{take} \PY{o}{.} \PY{n}{constrain}\PY{p}{)}
+    \PY{k+kr}{where} \PY{n}{constrain} \PY{o+ow}{=} \PY{p}{(}\PY{n}{max} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{.} \PY{p}{(}\PY{n}{mod} \PY{l+m+mi}{100}\PY{p}{)} \PY{o}{.} \PY{p}{(}\PY{n}{max} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{.} \PY{n}{abs}
+
+
+\PY{n+nf}{genFreqSelector} \PY{o+ow}{::} \PY{k+kt}{Gen} \PY{k+kt}{FrequencySelector}
+\PY{n+nf}{genFreqSelector} \PY{o+ow}{=} \PY{n}{toFrequencySelector} \PY{o}{\PYZlt{}\PYZdl{}\PYZgt{}} \PY{n}{genPairs}
+
+\PY{n+nf}{genGenerator} \PY{o+ow}{::} \PY{k+kt}{Gen} \PY{k+kt}{StdGen}
+\PY{n+nf}{genGenerator} \PY{o+ow}{=} \PY{n}{arbitrary} \PY{o}{\PYZgt{}\PYZgt{}=} \PY{n}{return} \PY{o}{.} \PY{n}{mkStdGen}
+
+\PY{n+nf}{genIncreasingRandomList} \PY{o+ow}{::} \PY{k+kt}{Gen} \PY{p}{[}\PY{k+kt}{Int}\PY{p}{]}
+\PY{n+nf}{genIncreasingRandomList} \PY{o+ow}{=} \PY{n}{fmap} \PY{n}{weightedRandomList} \PY{o}{\PYZdl{}}
+                          \PY{p}{(}\PY{p}{,}\PY{p}{)} \PY{o}{\PYZlt{}\PYZdl{}\PYZgt{}} \PY{n}{genGenerator} \PY{o}{\PYZlt{}*\PYZgt{}} \PY{n}{genFreqSelector}
+
+
+\PY{n+nf}{prop\PYZus{}CorrectLength} \PY{o+ow}{::} \PY{p}{[}\PY{p}{(}\PY{k+kt}{Int}\PY{p}{,} \PY{k+kt}{Int}\PY{p}{)}\PY{p}{]} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{Bool}
+\PY{n+nf}{prop\PYZus{}CorrectLength} \PY{n}{ns} \PY{o+ow}{=} \PY{p}{(}\PY{k+kt}{V}\PY{o}{.}\PY{n}{length} \PY{o}{\PYZdl{}} \PY{n}{toFrequencySelector} \PY{n}{ns}\PY{p}{)} \PY{o}{==} \PY{n}{totalCount}
+    \PY{k+kr}{where} \PY{n}{totalCount} \PY{o+ow}{=} \PY{n}{sum} \PY{o}{\PYZdl{}} \PY{n}{map} \PY{n}{fst} \PY{n}{ns}
+
+\PY{n+nf}{prop\PYZus{}CorrectOccurrences} \PY{o+ow}{::} \PY{k+kt}{FrequencySelector} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{Bool}
+\PY{n+nf}{prop\PYZus{}CorrectOccurrences} \PY{o+ow}{=} \PY{n}{all} \PY{p}{(}\PY{n}{uncurry} \PY{p}{(}\PY{o}{==}\PY{p}{)}\PY{p}{)} \PY{o}{.} \PY{n}{countOccurrences\PYZsq{}}
+
+
+\PY{n+nf}{prop\PYZus{}CorrectDistribution} \PY{o+ow}{::} \PY{p}{[}\PY{k+kt}{Int}\PY{p}{]} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{Bool}
+\PY{n+nf}{prop\PYZus{}CorrectDistribution} \PY{n}{xs} \PY{o+ow}{=} \PY{n}{all} \PY{n}{diffOk} \PY{o}{\PYZdl{}} \PY{n}{zip} \PY{n}{xs} \PY{o}{\PYZdl{}} \PY{n}{drop} \PY{l+m+mi}{1} \PY{n}{xs}
+    \PY{k+kr}{where} \PY{n}{diffOk} \PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)} \PY{o+ow}{=} \PY{n}{abs} \PY{p}{(}\PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{y}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n}{epsilon}
+          \PY{n}{epsilon} \PY{o+ow}{=} \PY{l+m+mi}{1000}
+
+\PY{c+c1}{\PYZhy{}\PYZhy{} HUnit Tests}
+\PY{n+nf}{testStringModel} \PY{o+ow}{=} \PY{n}{unlines} \PY{p}{[}\PY{l+s}{\PYZdq{}}\PY{l+s}{(}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{Hello}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{,[(2,1),(1,2)])}\PY{l+s}{\PYZdq{}}
+                          \PY{p}{,}\PY{l+s}{\PYZdq{}}\PY{l+s}{(}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{World}\PY{l+s+se}{\PYZbs{}}\PY{l+s+se}{\PYZdq{}}\PY{l+s}{,[(1,2),(2,1)])}\PY{l+s}{\PYZdq{}}\PY{p}{]}
+
+\PY{n+nf}{testPrimModel} \PY{o+ow}{=} \PY{p}{[}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{Hello}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{k+kt}{V}\PY{o}{.}\PY{n}{fromList} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+                \PY{p}{,}\PY{p}{(}\PY{l+s}{\PYZdq{}}\PY{l+s}{World}\PY{l+s}{\PYZdq{}}\PY{p}{,} \PY{k+kt}{V}\PY{o}{.}\PY{n}{fromList} \PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{]}
+
+\PY{n+nf}{walkTestModel} \PY{o+ow}{=} \PY{n}{walkModel} \PY{o}{\PYZdl{}} \PY{n}{fromPrim} \PY{o}{\PYZdl{}} \PY{n}{deserialize} \PY{n}{testStringModel}
+\PY{n+nf}{testDeserialize} \PY{o+ow}{=} \PY{n}{testPrimModel} \PY{o}{\PYZti{}=?} \PY{n}{deserialize} \PY{n}{testStringModel}
+
+\PY{c+c1}{\PYZhy{}\PYZhy{} Test Execution}
+
+\PY{n+nf}{main} \PY{o+ow}{=} \PY{k+kr}{do}
+  \PY{n}{quickCheck} \PY{o}{\PYZdl{}} \PY{n}{forAll} \PY{n}{genPairs} \PY{n}{prop\PYZus{}CorrectLength}
+  \PY{n}{quickCheck} \PY{o}{\PYZdl{}} \PY{n}{forAll} \PY{n}{genFreqSelector} \PY{n}{prop\PYZus{}CorrectOccurrences}
+  \PY{n}{quickCheck} \PY{o}{\PYZdl{}} \PY{n}{forAll} \PY{n}{genIncreasingRandomList} \PY{o}{\PYZdl{}} \PY{n}{not} \PY{o}{.}  \PY{n}{null}
+  \PY{n}{quickCheck} \PY{o}{\PYZdl{}} \PY{n}{forAll} \PY{n}{genIncreasingRandomList} \PY{p}{(}\PY{n}{prop\PYZus{}CorrectDistribution} \PY{o}{.} \PY{n}{take} \PY{l+m+mi}{10000}\PY{p}{)}
+  \PY{n}{runTestTT} \PY{o}{\PYZdl{}} \PY{k+kt}{TestList} \PY{p}{[}\PY{n}{testDeserialize}\PY{p}{]}
+\end{Verbatim}
+
+\pagebreak
+\section{do\_suck.hs}
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+\PY{k+kr}{import} \PY{n+nn}{Suck}
+\PY{k+kr}{import} \PY{n+nn}{Network.HTTP}
+
+\PY{c+c1}{\PYZhy{}\PYZhy{} For simplicity, we just use redirects in the shell to get data in/out}
+\PY{c+c1}{\PYZhy{}\PYZhy{} so this should be called as ./do\PYZus{}suck \PYZlt{} data/urls.txt \PYZgt{} sokal.model}
+\PY{n+nf}{main} \PY{o+ow}{::} \PY{k+kt}{IO} \PY{n+nb}{()}
+\PY{n+nf}{main} \PY{o+ow}{=} \PY{k+kr}{do}
+  \PY{n}{urls} \PY{o+ow}{\PYZlt{}\PYZhy{}} \PY{n}{getContents}
+  \PY{n}{pageBodies} \PY{o+ow}{\PYZlt{}\PYZhy{}} \PY{n}{mapM} \PY{p}{(}\PY{n+nf}{\PYZbs{}}\PY{n}{url} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{n}{simpleHTTP} \PY{p}{(}\PY{n}{getRequest} \PY{n}{url}\PY{p}{)} \PY{o}{\PYZgt{}\PYZgt{}=}
+                              \PY{n}{getResponseBody}\PY{p}{)} \PY{o}{\PYZdl{}} \PY{n}{lines} \PY{n}{urls}
+  \PY{n}{putStr} \PY{o}{\PYZdl{}} \PY{n}{unlines} \PY{o}{\PYZdl{}} \PY{n}{map} \PY{n}{show} \PY{o}{\PYZdl{}} \PY{n}{bodyTextsToModel} \PY{n}{pageBodies}
+\end{Verbatim}
+
+\section{do\_spew.hs}
+\begin{Verbatim}[commandchars=\\\{\},numbers=left,firstnumber=1,stepnumber=1]
+\PY{k+kr}{import} \PY{n+nn}{Spew}
+\PY{k+kr}{import} \PY{n+nn}{System.Random}
+\PY{k+kr}{import} \PY{n+nn}{System.IO}
+\PY{k+kr}{import} \PY{n+nn}{System.Environment} \PY{p}{(}\PY{n+nf}{getArgs}\PY{p}{)}
+
+\PY{n+nf}{parseArgs} \PY{o+ow}{::} \PY{p}{[}\PY{k+kt}{String}\PY{p}{]} \PY{o+ow}{\PYZhy{}\PYZgt{}} \PY{k+kt}{Int}
+\PY{n+nf}{parseArgs} \PY{k+kt}{[]} \PY{o+ow}{=} \PY{l+m+mi}{100}
+\PY{n+nf}{parseArgs} \PY{p}{[}\PY{n}{x}\PY{p}{]} \PY{o+ow}{=} \PY{n}{read} \PY{n}{x}
+
+
+\PY{n+nf}{main} \PY{o+ow}{=} \PY{k+kr}{do}
+  \PY{n}{gen} \PY{o+ow}{\PYZlt{}\PYZhy{}} \PY{n}{getStdGen}
+  \PY{n}{argv} \PY{o+ow}{\PYZlt{}\PYZhy{}} \PY{n}{getArgs}
+  \PY{n}{input} \PY{o+ow}{\PYZlt{}\PYZhy{}} \PY{n}{readFile} \PY{l+s}{\PYZdq{}}\PY{l+s}{sokal.model}\PY{l+s}{\PYZdq{}}
+  \PY{k+kr}{let} \PY{n}{model} \PY{o+ow}{=} \PY{n}{fromPrim} \PY{o}{\PYZdl{}} \PY{n}{deserialize} \PY{o}{\PYZdl{}} \PY{n}{input}
+  \PY{k+kr}{let} \PY{p}{(}\PY{n}{startIdx}\PY{p}{,} \PY{n}{gen\PYZsq{}}\PY{p}{)} \PY{o+ow}{=} \PY{n}{randomIdx} \PY{n}{model} \PY{n}{gen}
+  \PY{k+kr}{let} \PY{n}{text} \PY{o+ow}{=} \PY{n}{drop} \PY{l+m+mi}{1} \PY{o}{\PYZdl{}} \PY{n}{dropWhile} \PY{p}{(}\PY{n}{not} \PY{o}{.} \PY{n}{sentenceFinished}\PY{p}{)} \PY{o}{\PYZdl{}} \PY{n}{runModel} \PY{n}{gen\PYZsq{}} \PY{n}{model}
+  \PY{n}{putStrLn} \PY{o}{\PYZdl{}} \PY{n}{linefill} \PY{l+m+mi}{72} \PY{o}{\PYZdl{}} \PY{n}{takeAtLeast} \PY{p}{(}\PY{n}{parseArgs} \PY{n}{argv}\PY{p}{)} \PY{n}{text}
+\end{Verbatim}
+
+
+\end{document}

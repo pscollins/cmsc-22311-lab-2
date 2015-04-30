@@ -1,7 +1,6 @@
 import Suck
 
 import Data.Map
-
 import Test.HUnit
 
 
