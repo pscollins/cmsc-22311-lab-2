@@ -46,7 +46,9 @@ walkModel model idx = do
             let (s, fs) = model A.! idx
             tell [s]
             g <- get
-            return $ genWeightedRandom g fs
+            let (i, (g', _)) = runState nextWeightedRandom (g, fs)
+            put g'
+            return i
 
 
 

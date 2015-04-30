@@ -6,6 +6,7 @@ import Control.Monad
 import Control.Applicative
 import Data.Maybe
 import Control.Monad.State.Lazy
+import Control.Monad.Writer.Lazy
 import Data.Array (listArray, Array)
 import qualified Data.Array as A
 
@@ -67,12 +68,12 @@ testStringModel = unlines ["(\"Hello\",[(2,1),(1,2)])"
                           ,"(\"World\",[(1,2),(2,1)])"]
 testPrimModel = [("Hello", V.fromList [1, 1, 2])
                 ,("World", V.fromList [2, 1, 1])]
-walkTestModel = walkModel . fromPrim . deserialize testStringModel
+walkTestModel = walkModel $ fromPrim $ deserialize testStringModel
 
 
 testDeserialize = testPrimModel ~=? deserialize testStringModel
 
-testWalkModel = ["Hello", "World"] ~=? evalWriter (walkTestModel 0 >>= walkTestModel)
+-- testWalkModel = ["Hello", "World"] ~=? execWriter (walkTestModel 0 >>= walkTestModel)
 
 
 -- Test Execution
